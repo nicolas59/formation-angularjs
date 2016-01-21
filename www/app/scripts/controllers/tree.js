@@ -8,28 +8,8 @@
  * Controller of the wwwApp
  */
 angular.module('myApp')
-  .controller('MainCtrl', function () {
+  .controller('TreeCtrl', function () {
   
-
-    this.examples = [
-        {url:"#/hello", title:"Hello"},
-        {url:"#/tree", title:"Arbre"},
-        {url:"#/quartiers", title:"quartiers"},
-    ];
-
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-
-    this.documents = [
-    	{id:1, title:"HTML5 Boilerplate"},
-		{id:2, title:"AngularJS"},
-		{id:3, title:"Karma"}
-    ];
-
-
 	this.treeOptions = {
  		accept: function(sourceNodeScope, destNodesScope, destIndex) {
       		return true;

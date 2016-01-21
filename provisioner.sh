@@ -9,19 +9,21 @@ apt-get update
 # comment out the line below to disallow the system to upgrade
 apt-get upgrade -y && apt-get dist-upgrade -y
 
-printf "Adding MongoDB packages to apt..."
+#printf "Adding MongoDB packages to apt..."
 # import the public key used by apt
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 
 # create a list file for MongoDB
-echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+#echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 
 # reload the local package database
 apt-get update
 
 printf "Installing a few necessary packages..."
 # install required packages
-apt-get install -y git nodejs nodejs-legacy npm mongodb-org redis-server
+#apt-get install -y git nodejs nodejs-legacy npm mongodb-org redis-server
+apt-get install -y git nodejs nodejs-legacy npm
+
 
 # make sure npm is up to date (npm has trouble upgrading directly to 3.3.3 from 2.14.3, so we have to upgrade to 3.0.0 first)
 npm install -g npm@3.0.0
@@ -31,10 +33,10 @@ npm install -g npm@3.3.3
 hash -d npm
 
 # backup mongodb-org config file
-cp /etc/mongod.conf /etc/mongod.conf.backup
+#cp /etc/mongod.conf /etc/mongod.conf.backup
 
 # backup redis-server config file
-cp /etc/redis/redis.conf /etc/redis/redis.conf.backup
+#cp /etc/redis/redis.conf /etc/redis/redis.conf.backup
 
 printf "Installing nvm..."
 # download package and switch to latest version

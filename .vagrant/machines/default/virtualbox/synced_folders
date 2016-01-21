@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/www":{"guestpath":"/home/vagrant/www","hostpath":"/Users/Nicolas/Documents/vm/vagrant-node-env/formation-angularjs/www","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/Nicolas/Documents/vm/vagrant-node-env/formation-angularjs","disabled":false,"__vagrantfile":true}}}
