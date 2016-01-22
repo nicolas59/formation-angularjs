@@ -1,3 +1,35 @@
 
-<input type="text" ng-model="name"/>
-<span>Hello {{name}}</span>
+
+  <div class="form-group">
+    <label for="name">Nom</label>
+    <input type="text" ng-model="name"/>
+  </div>
+  <div class="form-group">
+    <label for="textColor">Couleur du texte</label>
+    <input type="text" ng-model="textColor">
+  </div>
+  <div class="checkbox">
+    <label>
+    	<input type="checkbox" ng-model="bold"/>Gras
+	</label>
+  </div>
+  <div class="form-group">
+    <input type="button" ng-click="reset()" value="reinitialiser"/>
+  </div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+   <span style="color:{{textColor}};font-weight:{{bold?'bold':''}}">Hello {{name}}</span>
+  </div>
+</div>
+
+<html ng-app>
+	<body ng-controller="HelloCtrl">
+		<div>
+		 	<label for="name">Nom</label>  <input type="text" ng-model="name"/>
+		 	<input type="button" ng-click="reset()" value="reinitialiser"/>
+		 	<span>Hello {{name}}</span>
+		</div>
+	</body>
+</html>
+

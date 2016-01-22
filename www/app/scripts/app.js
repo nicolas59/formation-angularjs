@@ -10,13 +10,7 @@
  */
 angular
   .module('myApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ui.tree'
+    'ngRoute'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -33,15 +27,7 @@ angular
         templateUrl: 'views/hello.html',
         controller: 'HelloCtrl',
         controllerAs: 'hello'
-      }).when('/tree', {
-        templateUrl: 'views/tree.html',
-        controller: 'TreeCtrl',
-        controllerAs: 'tree'
-      }).when('/quartiers', {
-        templateUrl: 'views/quartiers.html',
-        controller: 'QuartierCtrl',
-        controllerAs: 'qq'
-      })
+     })
       .otherwise({
         redirectTo: '/'
       });

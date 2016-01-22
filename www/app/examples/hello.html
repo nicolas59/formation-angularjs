@@ -1,0 +1,21 @@
+<html>
+	<body ng-app="myApp">
+		<div ng-controller="HelloCtrl">
+		 	<label for="name">Nom</label>  <input type="text" ng-model="name"/>
+		 	<input type="button" ng-click="reset()" value="reinitialiser"/>
+		 	<span>Hello {{name}}</span>
+		</div>
+		<script src="../bower_components/angular/angular.js"></script>
+	    <script>
+			var app = angular.module('myApp', []);
+			app.controller('HelloCtrl', function ($scope) {
+ 				$scope.name="Nicolas";
+ 				$scope.textColor = "#FF00000";
+
+	  			$scope.reset = function(){		
+	    			$scope.name="";
+	  			};
+	 		});
+	    </script>
+   </body>
+</html>
