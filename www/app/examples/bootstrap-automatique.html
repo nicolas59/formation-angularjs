@@ -1,0 +1,16 @@
+<html ng-app>
+	<body>
+		<div>
+		 	<label for="name">Nom</label>  <input type="text" ng-model="name"/>
+		 	<span>Hello {{name}}</span>
+		</div>
+		<div>
+		 	<label for="operation"></label>  <input type="text" ng-model="operation"/>
+		 	<span>= </span><span ng-bind="$eval(operation)"></span>
+		</div>
+		<div> 5 + 10 = {{5+10}}</div>
+		<script src="../bower_components/angular/angular.js"></script>
+   </body>
+</html>
+
+

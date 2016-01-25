@@ -1,0 +1,58 @@
+<html ng-app="myApp">
+	<body>
+		<div>
+			<ul> 
+				<li><a ng-href="#/">Home</a></li>
+				<li><a ng-href="#/about">A propos</a></li>
+				<li><a ng-href="#/contact">Contact</a></li>
+			</ul>
+		</div>
+		<div ng-view>
+<!-- Intégration des templates -->
+		</div>
+		
+		<script src="../bower_components/angular/angular.js"></script>
+		<script src="../bower_components/angular-route/angular-route.js"></script>
+		<script>
+			var app = angular.module("myApp", ["ngRoute"]);
+
+			app.config(
+				function ($routeProvider) {
+				    $routeProvider
+				      .when('/', {
+				        template: '	<div>Page home</div> ',
+				        controller: 'MainCtrl',
+				        controllerAs: 'main'
+				      })
+				      .when('/about', {
+				        template: '	<div> Formation Angular JS </div>',
+				        controller: 'AboutCtrl',
+				        controllerAs: 'about'
+				      }).when('/contact', {
+				        templateUrl: 'partial/contact.html',
+				        controller: 'ContactCtrl',
+				        controllerAs: 'hello'
+				     })
+				      .otherwise({
+				        redirectTo: '/'
+				      });
+			});
+
+
+			app.controller("MainCtrl", ["$scope", "$log", function($scope, $log){
+				$log.debug("Controleur activé MainCtrl");
+			}]);
+
+			app.controller("AboutCtrl", ["$scope", "$log", function($scope, $log){
+				$log.debug("Controleur activé AboutCtrl");
+			}]);
+
+
+			app.controller("ContactCtrl", ["$scope", "$log", function($scope, $log){
+				$log.debug("Controleur activé ContactCtrl");
+			}]);
+
+		</script>
+   </body>
+</html>
+
