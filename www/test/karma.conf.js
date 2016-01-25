@@ -36,7 +36,14 @@ module.exports = function(config) {
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
-      "test/spec/**/*.js"
+      "test/spec/**/*.js",
+
+      "app/examples/*.js",
+
+      "app/examples/**/*Ctrl.js",
+      "app/examples/**/*-spec.js"
+     
+      
     ],
 
     // list of files / patterns to exclude
@@ -66,7 +73,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false,
+    singleRun: true,
 
     colors: true,
 

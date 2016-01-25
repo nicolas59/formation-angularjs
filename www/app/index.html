@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="myApp"  ng-controller="navigationCtrl">
+  <body ng-app="examplesApp"  ng-controller="navigationCtrl">
     <div class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
@@ -58,11 +58,10 @@
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-
+       
         <script>
-
-          angular.module("myApp").controller("navigationCtrl", ["$scope", function($scope){
+        var app = angular.module("examplesApp", []);
+          angular.module("examplesApp").controller("navigationCtrl", ["$scope", function($scope){
 
             $scope.examples = [
               {url:"examples/hello.html", title:"hello", description:"Page d'exemple du two way binding"},
@@ -82,11 +81,6 @@
 
         </script>
 
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/hello.js"></script>
-        <script src="scripts/controllers/tree.js"></script>
-        <script src="scripts/controllers/quartiers.js"></script>
         <!-- endbuild -->
 </body>
 </html>

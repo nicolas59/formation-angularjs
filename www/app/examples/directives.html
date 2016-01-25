@@ -11,10 +11,15 @@
 			input.ng-invalid{
 				background-color: red;
 			}
+
+			.picture img {
+				width:200px;
+				height: 180px;
+			}
     	</style>
 	</head>
-	<body ng-app="myApp">
-		<div ng-controller="PersonCtrl">
+	<body ng-app="directiveApp">
+		<div ng-controller="ToonCtrl">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Filtres</div>
   				<div class="panel-body row">
@@ -25,9 +30,6 @@
 					Sexe : <select ng-model="sex"><option value=""></option><option value="Masculin">Masculin</option><option value="Féminin">Féminin</option></select>
 				</div>
 			</div>
-
-		
-
 	 		<div ng-repeat="person in persons|filter:sex|filter:name as results">
 				<card data="person"/>
 			</div>
@@ -37,43 +39,12 @@
 
 		</div>
 		<script src="../bower_components/angular/angular.js"></script>
+		<script src="directive/card.js"></script>
+		 <script src="controller/toonCtrl.js"></script>
 	    <script>
-			var app = angular.module('myApp', []);
-
-			app.directive("card", function(){
-			 	return {
-			 		scope:{
-			 			data :"="
-			 		},
-			    	templateUrl: 'card.html'
-			  	};
-			});
-
-
-			app.controller('PersonCtrl', function ($scope) {
-				$scope.sex="";
- 				$scope.persons = [
- 					{	name:"Doonald Duck", 
- 						birthday:"9 juin 1944", 
- 						sex:"Masculin", 
- 						town:"Donaldville",  
- 						picture:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/The_Spirit_of_43-Donald_Duck%2C_cropped_version.jpg/220px-The_Spirit_of_43-Donald_Duck%2C_cropped_version.jpg"
- 					},
- 					{	
- 						name:"Daisy Duck", 
- 						birthday:"9 juin 1937", 
- 						sex:"Féminin", 
- 						town:"Donaldville", 
- 						picture:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Daisy_duck_at_Tokyo_Disneyland.jpg/220px-Daisy_duck_at_Tokyo_Disneyland.jpg"
- 					},	{	
- 						name:"Daisy Duck 1231231", 
- 						birthday:"9 juin 1937", 
- 						sex:"Féminin", 
- 						town:"Donaldville", 
- 						picture:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Daisy_duck_at_Tokyo_Disneyland.jpg/220px-Daisy_duck_at_Tokyo_Disneyland.jpg"
- 					}
- 				];
-	 		});
+			var app = angular.module('directiveApp', ["cardDirective", "ToonCtrlMod"]);
 	    </script>
+	   
+
    </body>
 </html>
