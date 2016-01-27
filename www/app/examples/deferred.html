@@ -1,0 +1,41 @@
+<html>
+	<body ng-app="myApp">
+		<div ng-controller="TimerCtrl">
+			Il s'est ecoulé {{seconds}} secondes.
+		<div>
+		<div>
+			<input type="button" ng-click="change()" value="{{state}}"></button>
+		</div>
+	</div>
+
+		</div>
+		<script src="../bower_components/angular/angular.js"></script>
+	    <script>
+			var app = angular.module('myApp', []);
+			
+			app.controller('TimerCtrl', function ($scope, $interval, $log, $q) {
+ 				
+ 				function asyncEvent(){
+					var deferred = $q.defer();
+					$interval(function(){ 
+						//lancement traitement long
+						if(sucess){
+							deferred.resolve(params);
+						}else{
+							deferred.reject(params)
+						}
+						
+					}, 1000);
+					return deferred.promise;
+				}
+
+				var promise = asyncEvent();
+				promise.then(sucessFunction, failFunction);
+
+
+
+
+	 		});
+	    </script>
+   </body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+	<body ng-app="myApp">
+		<div ng-controller="TimerCtrl">
+			Il s'est ecoulé {{seconds}} secondes.
+		<div>
+		<div>
+			<input type="button" ng-click="change()" value="{{state}}"></button>
+		</div>
+	</div>
+
+		</div>
+		<script src="../bower_components/angular/angular.js"></script>
+	    <script>
+			var app = angular.module('myApp', []);
+			
+			app.controller('TimerCtrl', function ($scope, $interval, $log) {
+ 				$scope.seconds = 0;
+ 				$scope.state = "Arret";
+
+ 				var timer;
+
+ 				var chrono = function(){
+ 					$scope.seconds++;
+ 				};
+
+ 				timer = $interval(chrono, 1000);
+
+ 				$scope.change = function(){
+ 					if(timer){
+ 						$interval.cancel(timer);
+ 						timer = undefined;
+ 						$scope.state = "Reprendre";
+ 					}else{
+						timer = $interval(chrono, 1000);
+						$scope.state = "Arret";
+ 					}
+ 				}
+	 		});
+	    </script>
+   </body>
+</html>
