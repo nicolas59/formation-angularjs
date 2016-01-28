@@ -1,0 +1,14 @@
+<div>
+	<table class="table">
+		<tr>
+			<th>Nom</th>
+			<th>Date d'anniversaire</th>
+			<th></th>
+		</tr>
+  		<tr ng-repeat="person in persons">
+  			<td>{{person.name}}</td>
+  			<td>{{person.birthday}}</td>
+  			<td><a href="#/{{person.id}}">Carte d'identité</a></td>
+  		</tr>
+  	</table>
+</div>

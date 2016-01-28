@@ -2,10 +2,9 @@
 	"use strict";
 
 
-angular.module("ToonCtrlMod", [])
-	.controller('ToonCtrl', ["$scope",function ($scope) {
-		$scope.sex="";
-		$scope.persons = [
+angular.module("ToonCtrlMod", ["cardDirective"])
+	.run(function($rootScope){
+		$rootScope.persons = [
 			{	
 				id:1,
 				name:"Doonald Duck", 
@@ -24,7 +23,7 @@ angular.module("ToonCtrlMod", [])
 				pourc:50
 
 			},	{	
-				id:2,
+				id:3,
 				name:"Mickey Mouse", 
 				birthday:"18 novembre 1928", 
 				sex:"Masculin", 
@@ -33,6 +32,16 @@ angular.module("ToonCtrlMod", [])
 				pourc:50
 			}
 		];
-
+	})
+	.controller('ToonCtrl', function ($scope, $rootScope) {
+		$scope.persons = $rootScope.persons;
 		console.log($scope.persons);
-	}]);
+	}).controller('ToonDetailCtrl', function($rootScope, $routeParams){	
+		var id=$routeParams.toonId;
+		var _this = this;
+		angular.forEach($rootScope.persons, function(toon){
+			if(toon.id == id){
+				_this.toon = toon;
+			}
+		})
+	});

@@ -1,0 +1,60 @@
+<html>
+	<body ng-app="myApp">
+		<div ng-controller="ArticleCtrl">
+			<select ng-model="artSource">
+				<option ng-repeat="s in sources" value="{{s.term}}">{{s.term}}</option>
+			</select>
+
+		 	<table>
+		 		<tr ng-repeat="article in articles">
+		 			<td style="width:800px">{{article.snippet}}</td>
+		 			<td>{{article.source}}</td>
+		 			<td><a ng-href="{{article.web_url}}">Lien</a></td>
+		 		</tr>
+		 	</table>
+		</div>
+		<script src="../bower_components/angular/angular.js"></script>
+	    <script>
+			var app = angular.module('myApp', []);
+			app.constant("apiKey", "--- Mettre la clé ----");
+			app.provider("apiKeyProvider", ["apiKey", function(apiKey){
+				this.$get = function(){return apiKey};
+			}]);
+
+			app.service("nyService", function(apiKeyProvider, $http){
+				var nyUrl = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
+				this.getSources = function(){
+					return $http.get(nyUrl +"?facet_field=source&api-key=" + apiKeyProvider);
+				}
+				this.list = function(source){
+					return $http.get(nyUrl +"?fq=source:(\""+source+"\")&sort=newest&api-key=" + apiKeyProvider );
+				}
+			})
+
+			app.controller('ArticleCtrl', function ($scope, $http, $log, apiKey, nyService) {
+
+				nyService.getSources().then(function(response){
+					$scope.sources = response.data.response.facets.source.terms;
+				});
+				
+				$scope.$watch("artSource", function(newValue){
+					if(newValue !==undefined){
+						$log.debug("---- " + newValue);
+						nyService.list(newValue).then(function(response){
+							var docs = response.data.response.docs;
+							$scope.articles=docs;
+						})
+					}
+				});
+
+				$http.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=new%20york%20times&page=1&sort=newest&api-key=" + apiKey)
+			.then(function(response){
+				var docs = response.data.response.docs;
+				$scope.articles=docs;
+			
+
+			});
+		});
+	    </script>
+   </body>
+</html>
