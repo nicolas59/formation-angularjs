@@ -1,59 +1,102 @@
 <html>
-	<body ng-app="myApp">
-		<div ng-controller="ArticleCtrl">
-			<select ng-model="artSource">
-				<option ng-repeat="s in sources" value="{{s.term}}">{{s.term}}</option>
-			</select>
-
-		 	<table>
-		 		<tr ng-repeat="article in articles">
-		 			<td style="width:800px">{{article.snippet}}</td>
-		 			<td>{{article.source}}</td>
-		 			<td><a ng-href="{{article.web_url}}">Lien</a></td>
-		 		</tr>
-		 	</table>
+	<head>
+		 <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+		 <style type="text/css">
+		 .panel {
+		 	margin-top: 15px;
+		 }
+		 </style>
+   </head>
+	<body ng-app="myApp" ng-controller="ArticleCtrl" style="width:75%;margin:0 auto">
+		<div class="panel panel-default">
+			<div class="panel-heading">Critéres de recherche des articles du New York Times</div>
+			<div class="panel-body">
+				<span>Contient : </span>
+				<input type="text" ng-model="artContient"/>
+				<span>Source : </span>
+				<select ng-model="artSource">
+					<option ng-repeat="s in sources" value="{{s.term}}">{{s.term}}</option>
+				</select>
+				<button ng-click="search()" class="btn btn-primary">Rechercher</button>
+			</div>
+		</div>
+		<div class="panel panel-default" ng-show="articles!==undefined && articles.length>0">
+			<div class="panel-heading">Articles de {{source}}</div>
+			<div class="panel-body">
+			 	<table class="table table-striped" >
+			 		<tr>
+			 			<th>Titre</th>
+			 			<th>Source</th>
+			 			<th>Lien</th>
+			 		</tr>
+			 		<tr ng-repeat="article in articles" >
+			 			<td style="width:500px">{{article.snippet}}</td>
+			 			<td>{{article.source}}</td>
+			 			<td><a ng-href="{{article.web_url}}">Lien</a></td>
+			 		</tr>
+			 	</table>
+		 	</div>
 		</div>
 		<script src="../bower_components/angular/angular.js"></script>
 	    <script>
 			var app = angular.module('myApp', []);
-			app.constant("apiKey", "--- Mettre la clé ----");
-			app.provider("apiKeyProvider", ["apiKey", function(apiKey){
-				this.$get = function(){return apiKey};
-			}]);
+			app.constant("apiKey", "----- Cle --");
 
-			app.service("nyService", function(apiKeyProvider, $http){
+			app.service("nyService", function(apiKey, $http, $q, $log){
 				var nyUrl = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
+				
 				this.getSources = function(){
-					return $http.get(nyUrl +"?facet_field=source&api-key=" + apiKeyProvider);
+					var defer = $q.defer();
+					$http.get(url).then(function(response){
+						defer.resolve(response.data.response.facets.source.terms);
+					}, function(response){
+						defer.reject(response);
+					})
+					return defer.promise;
 				}
-				this.list = function(source){
-					return $http.get(nyUrl +"?fq=source:(\""+source+"\")&sort=newest&api-key=" + apiKeyProvider );
+
+				this.list = function(criteria){
+					var defer = $q.defer();
+					var query = [nyUrl + "?sort=newest&api-key=" + apiKey];
+					query.push(criteria.source?"fq=source:(\"" + criteria.source + "\")":"");
+					query.push(criteria.contient?"q="+criteria.contient:"");
+					$log.debug(query.join("&"));
+
+					$http.get(query.join("&"))
+						.then(function(response){
+							defer.resolve(response.data.response.docs);
+						}, function(response){
+							defer.reject(response);
+						})
+					return defer.promise;
 				}
 			})
 
 			app.controller('ArticleCtrl', function ($scope, $http, $log, apiKey, nyService) {
-
-				nyService.getSources().then(function(response){
-					$scope.sources = response.data.response.facets.source.terms;
+				nyService.getSources().then(function(sources){
+					$scope.sources = sources;
 				});
 				
-				$scope.$watch("artSource", function(newValue){
+				$scope.search = function(){
+					var criteria = {
+						source : $scope.artSource,
+						contient : $scope.artContient
+					};
+					nyService.list(criteria).then(function(documents){
+							$scope.articles=documents;
+							$scope.source=$scope.artSource;
+						})
+
+				}
+
+				/*$scope.$watch("artSource", function(newValue){
 					if(newValue !==undefined){
-						$log.debug("---- " + newValue);
-						nyService.list(newValue).then(function(response){
-							var docs = response.data.response.docs;
-							$scope.articles=docs;
+						$log.debug("Recherche des articles avec la source " + newValue);
+						nyService.list(newValue).then(function(documents){
+							$scope.articles=documents;
 						})
 					}
-				});
-
-				$http.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=new%20york%20times&page=1&sort=newest&api-key=" + apiKey)
-			.then(function(response){
-				var docs = response.data.response.docs;
-				$scope.articles=docs;
-			
-
-			});
+				});*/
 		});
 	    </script>
    </body>
