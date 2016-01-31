@@ -40,21 +40,19 @@
 		<script src="../bower_components/angular/angular.js"></script>
 	    <script>
 			var app = angular.module('myApp', []);
-			app.constant("apiKey", "----- Cle --");
+			app.constant("apiKey", "--- clé ----");
 
 			app.service("nyService", function(apiKey, $http, $q, $log){
 				var nyUrl = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
-				
 				this.getSources = function(){
 					var defer = $q.defer();
-					$http.get(url).then(function(response){
+					$http.get(nyUrl +"?facet_field=source&api-key=" + apiKey).then(function(response){
 						defer.resolve(response.data.response.facets.source.terms);
 					}, function(response){
 						defer.reject(response);
 					})
 					return defer.promise;
 				}
-
 				this.list = function(criteria){
 					var defer = $q.defer();
 					var query = [nyUrl + "?sort=newest&api-key=" + apiKey];
