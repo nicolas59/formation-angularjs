@@ -23,10 +23,10 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Filtres</div>
   				<div class="panel-body row">
-					Nom : 
+					Nom :
 
 					<input type="text" ng-model="name" ng-pattern="/^[A-Za-z]+$/" />
-					
+
 					Sexe : <select ng-model="sex"><option value=""></option><option value="Masculin">Masculin</option><option value="Féminin">Féminin</option></select>
 				</div>
 			</div>
@@ -42,9 +42,7 @@
 		<script src="directive/card.js"></script>
 		 <script src="controller/toonCtrl.js"></script>
 	    <script>
-			var app = angular.module('directiveApp', ["cardDirective", "ToonCtrlMod"]);
+			angular.module('directiveApp', ["cardDirective", "ToonCtrlMod"]);
 	    </script>
-	   
-
    </body>
 </html>
