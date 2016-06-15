@@ -7,21 +7,21 @@
 		 }
 		 </style>
    </head>
-	<body ng-app="myApp" ng-controller="ArticleCtrl" style="width:75%;margin:0 auto">
+	<body ng-app="myApp" ng-controller="ArticleCtrl as articleCtrl" style="width:75%;margin:0 auto">
 		<div class="panel panel-default">
 			<div class="panel-heading">Critéres de recherche des articles du New York Times</div>
 			<div class="panel-body">
 				<span>Contient : </span>
-				<input type="text" ng-model="artContient"/>
+				<input type="text" ng-model="articleCtrl.artContient"/>
 				<span>Source : </span>
-				<select ng-model="artSource">
-					<option ng-repeat="s in sources" value="{{s.term}}">{{s.term}}</option>
+				<select ng-model="articleCtrl.artSource">
+					<option ng-repeat="s in articleCtrl.sources" value="{{s.term}}">{{s.term}}</option>
 				</select>
-				<button ng-click="search()" class="btn btn-primary">Rechercher</button>
+				<button ng-click="articleCtrl.search()" class="btn btn-primary">Rechercher</button>
 			</div>
 		</div>
-		<div class="panel panel-default" ng-show="articles!==undefined && articles.length>0">
-			<div class="panel-heading">Articles de {{source}}</div>
+		<div class="panel panel-default" ng-show="articleCtrl.articles!==undefined && articleCtrl.articles.length>0">
+			<div class="panel-heading">Articles de {{sarticleCtrl.ource}}</div>
 			<div class="panel-body">
 			 	<table class="table table-striped" >
 			 		<tr>
@@ -29,7 +29,7 @@
 			 			<th>Source</th>
 			 			<th>Lien</th>
 			 		</tr>
-			 		<tr ng-repeat="article in articles" >
+			 		<tr ng-repeat="article in articleCtrl.articles" >
 			 			<td style="width:500px">{{article.snippet}}</td>
 			 			<td>{{article.source}}</td>
 			 			<td><a ng-href="{{article.web_url}}">Lien</a></td>
@@ -39,12 +39,18 @@
 		</div>
 		<script src="../bower_components/angular/angular.js"></script>
 	    <script>
-			var app = angular.module('myApp', []);
-			app.constant("apiKey", "--- clé ----");
+			var app = angular.module('myApp', [])
+			.constant("apiKey", "---API KEY --")
+			.service("nyService", nyService)
+			.controller('ArticleCtrl',ArticleCtrl);
 
-			app.service("nyService", function(apiKey, $http, $q, $log){
+			function nyService(apiKey, $http, $q, $log){
 				var nyUrl = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
-				this.getSources = function(){
+				var vm = this;
+				vm.getSources = getSources;
+				vm.list = list;
+
+				function getSources(){
 					var defer = $q.defer();
 					$http.get(nyUrl +"?facet_field=source&api-key=" + apiKey).then(function(response){
 						defer.resolve(response.data.response.facets.source.terms);
@@ -53,7 +59,7 @@
 					})
 					return defer.promise;
 				}
-				this.list = function(criteria){
+				function list(criteria){
 					var defer = $q.defer();
 					var query = [nyUrl + "?sort=newest&api-key=" + apiKey];
 					query.push(criteria.source?"fq=source:(\"" + criteria.source + "\")":"");
@@ -68,21 +74,28 @@
 						})
 					return defer.promise;
 				}
-			})
+			}
 
-			app.controller('ArticleCtrl', function ($scope, $http, $log, apiKey, nyService) {
-				nyService.getSources().then(function(sources){
-					$scope.sources = sources;
-				});
-				
-				$scope.search = function(){
+			 function ArticleCtrl($scope, $http, $log, apiKey, nyService) {
+				 var vm = this;
+				 vm.search = search;
+
+				 activate();
+
+				 function activate(){
+					 nyService.getSources().then(function(sources){
+	 					vm.sources = sources;
+	 				});
+				 }
+
+				function search(){
 					var criteria = {
-						source : $scope.artSource,
-						contient : $scope.artContient
+						source : vm.artSource,
+						contient : vm.artContient
 					};
 					nyService.list(criteria).then(function(documents){
-							$scope.articles=documents;
-							$scope.source=$scope.artSource;
+							vm.articles=documents;
+							vm.source=vm.artSource;
 						})
 
 				}
@@ -95,7 +108,7 @@
 						})
 					}
 				});*/
-		});
+		};
 	    </script>
    </body>
 </html>
