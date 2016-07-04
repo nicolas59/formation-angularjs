@@ -15,7 +15,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # host to guest port forwarding
     config.vm.network :forwarded_port, guest: 1337, host: 1337
+	config.vm.network :forwarded_port, guest: 35729, host: 35729
 
+	config.ssh.pty = true
+	
+	
+	
     # settings for VirtualBox provider
     config.vm.provider "virtualbox" do |v, override|
         v.memory = MAX_MEMORY
@@ -25,8 +30,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             v.customize ["sharedfolder", "add", :id, "--name", "www", "--hostpath", (("//?/" + File.dirname(__FILE__) + "/www").gsub("/","\\"))]
 
+            #override.vm.provision :shell, inline: "mount -t vboxsf -o uid=`id -u vagrant`,gid=`getent group vagrant | cut -d: -f3` www /home/vagrant/www", run: "always"
             override.vm.provision :shell, inline: "mkdir -p /home/vagrant/www"
-            override.vm.provision :shell, inline: "mount -t vboxsf -o uid=`id -u vagrant`,gid=`getent group vagrant | cut -d: -f3` www /home/vagrant/www", run: "always"
         else
             # set up synced folder
             override.vm.synced_folder "./www", "/home/vagrant/www"
