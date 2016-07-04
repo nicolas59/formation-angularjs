@@ -19,7 +19,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.ssh.pty = true
 	
+	#Vagrant avec un proxy  (à declarer dans le shell) export VAGRANT_HTTP_PROXY="http://yourproxy:80"
 	
+	# Configuration du proxy au sein de la VM
+	#vagrant plugin install vagrant-proxyconf
+	#config.proxy.http     = "http://yourproxy:8080"
+	#config.proxy.https    = "http://yourproxy:8080"
+	#config.proxy.no_proxy = "localhost,127.0.0.1"
 	
     # settings for VirtualBox provider
     config.vm.provider "virtualbox" do |v, override|
